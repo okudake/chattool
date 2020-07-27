@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>ルーム選択</title>
+  </head>
+  <body>
+    <h1>ルーム選択</h1>
+    <h2>新しくルームを作成</h2>
+    <a>自分のid</a>
+      <form id="roomCreate" action="/rooms/create" method="post">
+        <input type="text" name="roomMateId" value="相手のIDを入力してください"><button id="sendButton">作成</button>
+      </form>
+      <ul>
+      <% rooms_data.forEach(room_data => { %>
+
+        <li><a href="/rooms/<%=room_data.id%>"><%= room_data.user_name %><a><li>
+
+     <% }) %>
+     </ul>
+  </body>
+</html>

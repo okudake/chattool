@@ -1,0 +1,49 @@
+
+
+<html>
+<head>
+    <title>チャットアプリをつくってみよう</title>
+    <style media="screen">
+    * {margin:0; padding:0; box-sizing:border-box; }
+    body { font-size: 14px; max-width: 600px; width: 100%; margin: 0 auto; padding: 0 15px; position: relative; }
+    #chatSend { padding: 3px 15px; position: fixed; bottom: 5px; width: 100%; max-width: 600px; }
+    #chatText { border: 2px solid #ccc; padding: 10px; width: 90%; margin-right: .5%; border-radius: 5px; }
+    #sendButton { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; border-radius: 5px; }
+    #timeline { list-style-type: none; margin: 0; padding: 0; }
+    #timeline li { padding: 5px 10px; }
+    #timeline li:nth-child(odd) { background: #eee; }
+
+    </style>
+</head>
+<body>
+    <h1>チャットアプリをつくってみよう<%= room_id %></h1>
+
+    <ul id="timeline"></ul>
+    <form id="chatSend" action="">
+        <input id="chatText" autocomplete="off"><button id="sendButton">送信</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+
+            socket.on('connect', function(){
+              socket.emit('joinRoom', "<%= room_id %>");
+            });
+
+            $('form').submit(function(){
+                socket.emit('chat message', $('#chatText').val());
+
+                $('#chatText').val('');
+
+            });
+
+            socket.on('chat message', function(msgobj){
+                $('#timeline').append($('<li>').text(msgobj.msg));
+            });
+        });
+    </script>
+</body>
+</html>
